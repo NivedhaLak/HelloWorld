@@ -1,0 +1,309 @@
+-------------------------------------------------
+4/4/2017
+-------------------------------------------------
+
+application context - DI container
+
+used in xml
+-------------------------
+p:namespace - xml srt cut for providing value to beans , properties
+
+	<bean id="mail" class="com.demo.spring.Mail" p:to="all" p:from="from_test"
+		p:message-ref="msg"></bean>
+
+
+util:namespace - assign collections value in xml
+	<util:list id="list" list-class="java.util.ArrayList"
+		value-type="java.lang.String">
+		<value>hello</value>
+		<value>Tiger</value>
+		<value>aaa</value>
+
+	</util:list>
+
+
+AOP 
+-------
+
+if 2/more aspect is thr v can order using @order(value=1)
+pointcut - expression define point to interprited 
+	execution(* com.demo.spring.Concat.doConcat(..))
+
+@around, @before ,@after
+
+(ProceedingJoinPoint joinPoint)
+
+
+Bean 
+
+-----------------
+	can b ordered using @order
+	its can be abstrast - no obj can't be created
+	always - sping srt with applicaton context 
+	-parent child application context
+		ApplicationContext parent= new ClassPathXmlApplicationContext("context.xml");
+ApplicationContext child = new ClassPathXmlApplicationContext( new string[]{"context.xml"},parent);
+
+	child - refers parent
+	parent cant refer child
+
+bean lifecyle 
+----------------------
+-till proj dies , bena can be recyled
+@bean -pre intializing bena by DI goes to diff steps
+
+	-  init,pre & post initailize
+	-  destroy 
+
+
+
+----------------------------------------------------------------------------
+need resarch on this
+Transaction
+---------------------
+Acid- sql
+base -no sql
+
+types of transaction- 
+local 
+
+global = provided by application server - jta(resources from jndi)
+
+container manager trans- cmt (uses jndi ,session beans )
+
+spring -with plugin create transaction using AOP (around  advice)
+
+
+resource manager - 2 phase commit - application servers (JTA follows x-open standards)
+
+spring -provideds distributed transaction - so replaces JTA
+	consistent prog model envir 
+	top level interaction SPI -just use it
+	plugin nd aplay - need to change the transaction manager plugin (jdbc 		,hibernate,jdo,jpa,jta)
+
+-------------------
+spring transaction model
+------------------
+declarative 
+programatic
+
+
+
+	hierachical transaction manager
+
+dsTRANmANAGER	HIBERANATETranMan 	jdo TM 		Jpa TM 		JTa TM
+jdbc			hibernate  	jdo	 	jpa		jta	
+
+-------------------------------------------------
+
+tranasaction attribute : 
+
+@transactional  / <tx:Advice /> ( method level)
+
+
+AOP Tranasaction Manager
+------------------------
+create aspect using pointcut(where to be applied) and advice(what needs tochagne)
+
+	auto commit- false
+	
+	datasource- Trans manager- srt tranc- coomit /roolback / stop transaction
+
+propagation type:
+
+	required,required-new,supports,not supported etc.	 
+
+@Transactional(propagation = Propagation.SUPPORTS, transactionManager = "transactionManager")
+
+--------------------------------------------------------------------------------
+
+
+session factory(mapping congif - datasource,url usr pwd)
+
+entitymanagerfactory  - JPA(replace entity manager)
+entitymanager - hibernate
+
+
+-----------------------------
+
+		JPA - using following ORM to persiist value
+
+toplink	hibernate open-jpa eclipselink jdo
+
+
+-----------------
+spring data jpa - config didff db 
+
+req life cycle
+-------------------------
+req
+-> dispatcher sevlet ->handler mapping 
+	 	-> controller - modelnd view
+		-> view resolver
+		-> view
+
+
+
+
+
+
+
+
+------------------------------------------------------
+clean package
+maven install - goal
+
+------------------------------------------
+
+4/5/17
+
+
+@enablewebmvc  : 
+
+@servletComponentScan : filter - web.xml include servlet mapping nd config done in sevlet.xml & web.xml
+
+abstrastsnnotaitoncofig dispatcherservletinoit class - config 
+ root config- security,loads first brf initlaizig 
+ servletconfig- classconfig
+ servlet mapping - mapping in web.xml 
+  
+-----------------------------------
+preinitalizer bfr application gets loads
+
+contenxt param - created by listener - root context
+
+
+RMI - roemote methd invoke
+
+commu b/t jvm - pass by value using serilizable
+rpc-remote proce call
+
+REST : jax-rs
+
+to use http methods
+
+@restcontroller - return xml/ json data
+
+RestTemplate = connect to rest thr java
+
+------------------------------------------------
+
+hsql - inbuild db , jndi 
+
+to run jar form cmd : java -jar jar_name
+
+----------------------------
+
+
+4/6/17
+
+covert maven project to spring boot application
+
+change plugin , parent ,srt's depency & plugin
+
+------------------------------------------------
+
+java -jar -Dserver.port=8080 app_name.jar
+
+-D - jvm argument
+
+
+     - > look d rule to create cloud based application for microservices app
+		12factor.net
+
+------------------
+
+
+JMS- works on j2EE , activeMQ- broker to transfer msg b/w application
+enterprise message is used in jms
+It a techlogy not a protocol 
+AMQP -protocol works like jms
+
+types: 
+PTP point to point (only one receipiant)
+	    msg		consume	
+	cli1 - > queue -> c2
+		       <-acklowledge
+
+publish -subr system -tpic many connection
+		  snd
+	c2-> topic-> c2
+		  -> delivers
+
+spring - JMS works with mdp
+Mess deriven pojo (MDP)
+
+client shd create -jndi , queue
+
+-----------------------
+
+micro service
+
+
+nms -nomarlize msg router
+
+
+(clicent side load blancer)ribbon - euraka->finds services
+
+spring cloud
+-----------------
+
+service registry - eureka
+service discovery - eureka
+load balancer -ribbon - find services , running as a service (@service,@compoonent)
+proxy - zuul
+api gateway -feign automatic rest template to geanerate 
+
+
+spring session : 
+
+@hystrix commond:  
+	prevent cascading failure ,class shd v @service
+	circuit breaker
+	moonitoring whr it gets fail- metrix
+
+
+
+@refreshScope- to refesh the properties file 
+
+feign - automatic client processing
+
+zuul- route, filtering 
+acts like a gateway to redirect to diff url
+access log fa specific filter-pre nd post processing
+
+netfilx :
+
+	reg, discovery ,
+
+
+
+Spring session - refer
+
+
+maven goal- clean package spring-boot:run -DskipTests
+
+
+@enableRedishttpsession:, http sesion data to cache
+jedis
+lettuce
+
+maven goal
+----------------
+jetty goal : jetty:run
+maven goal : clean package spring-boot:run -DskipTests
+
+
+zipkin, jribbol,swagger
+-------------------------------------------------------------------
+----------------------------------------------------
+
+lamda
+---
+functional progm
+
+
+f(x,y) =x+y;
+(x,y)->x+y;
+
+-----------venkat subramanian --------
