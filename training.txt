@@ -1,0 +1,14 @@
+www.aws.training/oneclickregistration?id=12596
+
+https://aws.qwiklab.com/live
+
+https://bookshelf.vitalsource.com/#/
+
+
+window - connect
+
+mstsc.exe
+connet with pub ip 
+username - administrator
+
+pwd - coA3pzb3BqH7
