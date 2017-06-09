@@ -4,7 +4,9 @@ https://aws.qwiklab.com/live
 
 https://bookshelf.vitalsource.com/#/
 
+https://aws.amazon.com/documentation/
 
+https://run.qwiklab.com/dashboard
 window - connect
 
 mstsc.exe
